@@ -53,13 +53,22 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// Generate WhatsApp message link for an offer
+// Generate WhatsApp message link for an offer.
+// IMPORTANT: the link should open a chat TO the site owner's WhatsApp
+// number (ownerWhatsapp), pre-filled with the offer details, so the
+// customer can tap Send and the owner receives it. The customer's own
+// WhatsApp number (whatsapp) is only included inside the message text as
+// their contact info - it is never used as the link's destination.
 router.post("/send-whatsapp", async (req, res) => {
   try {
-    const { customerName, country, whatsapp, books = [], totalAmount, cycleDate } = req.body;
+    const { customerName, country, whatsapp, ownerWhatsapp, books = [], totalAmount, cycleDate } = req.body;
+
+    if (!ownerWhatsapp) {
+      return res.status(400).json({ message: "ownerWhatsapp (the site owner's number) is required" });
+    }
 
     let message = `THAILAND BOOK NUMBERS / OVERSEAS\nORDER OFFER\n-----------------------------\n`;
-    message += `Cycle Date: ${cycleDate}\nCustomer: ${customerName}\nCountry: ${country}\nWhatsApp: ${whatsapp}\n\nSelected Books:\n`;
+    message += `Cycle Date: ${cycleDate}\nCustomer: ${customerName}\nCountry: ${country}\nCustomer WhatsApp: ${whatsapp}\n\nSelected Books:\n`;
 
     books.forEach((b) => {
       message += `#${b.serial} x ${b.quantity} = $${b.total}\n`;
@@ -67,7 +76,7 @@ router.post("/send-whatsapp", async (req, res) => {
 
     message += `-----------------------------\nTotal Offer: $${totalAmount} USD\n`;
 
-    const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+    const waLink = `https://wa.me/${ownerWhatsapp}?text=${encodeURIComponent(message)}`;
     res.json({ waLink });
   } catch (err) {
     res.status(500).json({ message: err.message });

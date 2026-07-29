@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { getCart, clearCart } from "../utils/cart";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const OWNER_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
 export default function Checkout() {
   const router = useRouter();
@@ -36,6 +37,11 @@ export default function Checkout() {
       return;
     }
 
+    if (!OWNER_WHATSAPP) {
+      setError("Site is not fully configured yet: NEXT_PUBLIC_WHATSAPP_NUMBER is missing.");
+      return;
+    }
+
     const books = cartItems.map((i) => ({
       serial: i.serial,
       quantity: i.quantity,
@@ -57,7 +63,9 @@ export default function Checkout() {
         throw new Error(offerData.message || "Failed to submit offer");
       }
 
-      // 2. Ask backend to build the WhatsApp message link
+      // 2. Ask backend to build the WhatsApp message link - it must open a
+      // chat TO the site owner's number, with the customer's details inside
+      // the message text (not the other way around).
       const waRes = await fetch(`${API_URL}/offers/send-whatsapp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,6 +73,7 @@ export default function Checkout() {
           customerName: form.customerName,
           country: form.country,
           whatsapp: form.whatsapp,
+          ownerWhatsapp: OWNER_WHATSAPP,
           books,
           totalAmount,
           cycleDate: offerData.cycleDate,
