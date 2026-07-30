@@ -7,6 +7,16 @@ import { getCart, clearCart } from "../utils/cart";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const OWNER_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
+// Cleans a phone number down to plain digits, stripping a leading "00" if
+// present. Mirrors the same logic used on the backend so both sides always
+// agree on what a "clean" number looks like.
+function sanitizePhone(raw) {
+  if (!raw) return "";
+  let cleaned = String(raw).replace(/\D/g, "");
+  if (cleaned.startsWith("00")) cleaned = cleaned.slice(2);
+  return cleaned;
+}
+
 export default function Checkout() {
   const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
@@ -42,6 +52,12 @@ export default function Checkout() {
       return;
     }
 
+    const cleanCustomerWhatsapp = sanitizePhone(form.whatsapp);
+    if (cleanCustomerWhatsapp.length < 10 || cleanCustomerWhatsapp.length > 15) {
+      setError("Please enter a valid WhatsApp number with country code (e.g. 923001234567), without '+' or '00'.");
+      return;
+    }
+
     const books = cartItems.map((i) => ({
       serial: i.serial,
       quantity: i.quantity,
@@ -56,7 +72,7 @@ export default function Checkout() {
       const offerRes = await fetch(`${API_URL}/offers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, books, totalAmount }),
+        body: JSON.stringify({ ...form, whatsapp: cleanCustomerWhatsapp, books, totalAmount }),
       });
       const offerData = await offerRes.json();
       if (!offerRes.ok) {
@@ -72,8 +88,8 @@ export default function Checkout() {
         body: JSON.stringify({
           customerName: form.customerName,
           country: form.country,
-          whatsapp: form.whatsapp,
-          ownerWhatsapp: OWNER_WHATSAPP,
+          whatsapp: cleanCustomerWhatsapp,
+          ownerWhatsapp: sanitizePhone(OWNER_WHATSAPP),
           books,
           totalAmount,
           cycleDate: offerData.cycleDate,
@@ -148,12 +164,15 @@ export default function Checkout() {
             <input
               name="whatsapp"
               type="text"
-              placeholder="e.g. 923001234567"
+              placeholder="923001234567 (no + or 00)"
               className="border p-2 w-full"
               value={form.whatsapp}
               onChange={handleChange}
               required
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Country code + number only, e.g. 923001234567 - no "+" or "00".
+            </p>
           </div>
           <div>
             <label className="block">Email (Optional)</label>

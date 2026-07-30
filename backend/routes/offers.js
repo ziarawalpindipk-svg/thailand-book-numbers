@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Offer = require("../models/Offer");
 const getCycleDate = require("../utils/dateCycle");
+const sanitizePhone = require("../utils/sanitizePhone");
 
 // Get all offers
 router.get("/", async (req, res) => {
@@ -63,7 +64,9 @@ router.post("/send-whatsapp", async (req, res) => {
   try {
     const { customerName, country, whatsapp, ownerWhatsapp, books = [], totalAmount, cycleDate } = req.body;
 
-    if (!ownerWhatsapp) {
+    const cleanOwnerNumber = sanitizePhone(ownerWhatsapp);
+
+    if (!cleanOwnerNumber) {
       return res.status(400).json({ message: "ownerWhatsapp (the site owner's number) is required" });
     }
 
@@ -76,7 +79,7 @@ router.post("/send-whatsapp", async (req, res) => {
 
     message += `-----------------------------\nTotal Offer: $${totalAmount} USD\n`;
 
-    const waLink = `https://wa.me/${ownerWhatsapp}?text=${encodeURIComponent(message)}`;
+    const waLink = `https://wa.me/${cleanOwnerNumber}?text=${encodeURIComponent(message)}`;
     res.json({ waLink });
   } catch (err) {
     res.status(500).json({ message: err.message });
