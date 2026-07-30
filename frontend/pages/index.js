@@ -12,8 +12,8 @@ export default function Home() {
       <Header />
       <main className="p-6 max-w-6xl mx-auto">
         <section className="text-center mb-8">
-          <h1 className="text-3xl font-bold">Discover 999 Unique Thai Books</h1>
-          <p>Make Your Offer & Own a Piece of Thai Literature</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Discover 999 Unique Thai Books</h1>
+          <p className="text-sm sm:text-base mt-1">Make Your Offer & Own a Piece of Thai Literature</p>
         </section>
 
         <AdSlot html={HOME_BANNER_AD} className="flex justify-center mb-6" />

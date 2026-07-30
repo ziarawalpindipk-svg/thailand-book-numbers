@@ -53,7 +53,8 @@ export default function AdminBooks() {
             your database with the 999 book records.
           </p>
         ) : (
-          <table className="w-full border mt-4">
+          <div className="overflow-x-auto mt-4">
+          <table className="w-full border min-w-[500px]">
             <thead>
               <tr>
                 <th className="border p-2">Serial</th>
@@ -81,6 +82,7 @@ export default function AdminBooks() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </main>
       <Footer />

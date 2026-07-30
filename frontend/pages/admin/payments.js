@@ -7,7 +7,8 @@ export default function AdminPayments() {
       <Header />
       <main className="p-6">
         <h1 className="text-2xl font-bold">Manage Payments</h1>
-        <table className="w-full border mt-4">
+        <div className="overflow-x-auto mt-4">
+        <table className="w-full border min-w-[500px]">
           <thead>
             <tr>
               <th className="border p-2">Offer ID</th>
@@ -25,6 +26,7 @@ export default function AdminPayments() {
             </tr>
           </tbody>
         </table>
+        </div>
       </main>
       <Footer />
     </div>

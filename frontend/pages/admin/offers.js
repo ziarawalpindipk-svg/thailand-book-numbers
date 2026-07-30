@@ -55,7 +55,8 @@ export default function AdminOffers() {
         ) : offers.length === 0 ? (
           <p className="mt-4">No offers submitted yet.</p>
         ) : (
-          <table className="w-full border mt-4">
+          <div className="overflow-x-auto mt-4">
+          <table className="w-full border min-w-[600px]">
             <thead>
               <tr>
                 <th className="border p-2">Offer ID</th>
@@ -90,6 +91,7 @@ export default function AdminOffers() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </main>
       <Footer />
