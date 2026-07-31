@@ -10,6 +10,8 @@ export default function AdminBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [newBook, setNewBook] = useState({ serialNumber: "", title: "" });
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     if (!token) return;
@@ -28,6 +30,31 @@ export default function AdminBooks() {
       setError(err.message || "Could not reach the backend. Is the server running?");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleAddBook(e) {
+    e.preventDefault();
+    if (!newBook.serialNumber.trim()) return;
+    setAdding(true);
+    setError("");
+    try {
+      const res = await fetch(`${API_URL}/books`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newBook),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to add book");
+      setBooks([...books, data]);
+      setNewBook({ serialNumber: "", title: "" });
+    } catch (err) {
+      setError(err.message || "Failed to add book");
+    } finally {
+      setAdding(false);
     }
   }
 
@@ -55,12 +82,47 @@ export default function AdminBooks() {
         <h1 className="text-2xl font-bold">Manage Books</h1>
 
         {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+
+        {/* Quick add form - handy for testing, and for adding books one at a
+            time. For all 999 books at once, a bulk import script is better -
+            ask for that separately when you're ready. */}
+        <form onSubmit={handleAddBook} className="flex flex-wrap gap-2 mt-4 items-end">
+          <div>
+            <label className="block text-sm">Serial *</label>
+            <input
+              type="text"
+              placeholder="e.g. 007"
+              className="border p-2"
+              value={newBook.serialNumber}
+              onChange={(e) => setNewBook({ ...newBook, serialNumber: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm">Title</label>
+            <input
+              type="text"
+              placeholder="Book title (optional)"
+              className="border p-2"
+              value={newBook.title}
+              onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={adding}
+            className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
+          >
+            {adding ? "Adding..." : "+ Add Book"}
+          </button>
+        </form>
+
         {loading ? (
           <p className="mt-4">Loading books...</p>
         ) : books.length === 0 ? (
           <p className="mt-4">
-            No books found yet. Add books via <code>POST /api/books</code> or seed
-            your database with the 999 book records.
+            No books yet - add one above to test, or ask for a bulk import
+            once you're ready to load all 999 books.
           </p>
         ) : (
           <div className="overflow-x-auto mt-4">
