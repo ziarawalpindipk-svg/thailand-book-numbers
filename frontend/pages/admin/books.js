@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import useAdminGuard from "../../utils/useAdminGuard";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function AdminBooks() {
+  const { checking, token } = useAdminGuard();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (!token) return;
     fetchBooks();
-  }, []);
+  }, [token]);
 
   async function fetchBooks() {
     setLoading(true);
@@ -31,12 +34,19 @@ export default function AdminBooks() {
   async function handleDelete(serial) {
     if (!confirm(`Delete book #${serial}?`)) return;
     try {
-      await fetch(`${API_URL}/books/${serial}`, { method: "DELETE" });
+      const res = await fetch(`${API_URL}/books/${serial}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to delete book");
       setBooks(books.filter((b) => b.serialNumber !== serial));
     } catch (err) {
       setError(err.message || "Failed to delete book");
     }
   }
+
+  if (checking) return null;
 
   return (
     <div>

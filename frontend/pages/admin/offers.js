@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import useAdminGuard from "../../utils/useAdminGuard";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function AdminOffers() {
+  const { checking, token } = useAdminGuard();
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (!token) return;
     fetchOffers();
-  }, []);
+  }, [token]);
 
   async function fetchOffers() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_URL}/offers`);
+      const res = await fetch(`${API_URL}/offers`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to load offers");
       setOffers(data);
@@ -32,7 +37,10 @@ export default function AdminOffers() {
     try {
       const res = await fetch(`${API_URL}/offers/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ status }),
       });
       const updated = await res.json();
@@ -42,6 +50,8 @@ export default function AdminOffers() {
       setError(err.message || "Failed to update offer");
     }
   }
+
+  if (checking) return null;
 
   return (
     <div>

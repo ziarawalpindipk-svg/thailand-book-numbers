@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Book = require("../models/Book");
+const adminAuth = require("../middleware/adminAuth");
 
 // Get all books
 router.get("/", async (req, res) => {
@@ -24,7 +25,7 @@ router.get("/:serial", async (req, res) => {
 });
 
 // Add new book
-router.post("/", async (req, res) => {
+router.post("/", adminAuth, async (req, res) => {
   try {
     const newBook = new Book(req.body);
     await newBook.save();
@@ -35,7 +36,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update book
-router.put("/:serial", async (req, res) => {
+router.put("/:serial", adminAuth, async (req, res) => {
   try {
     const updated = await Book.findOneAndUpdate(
       { serialNumber: req.params.serial },
@@ -50,7 +51,7 @@ router.put("/:serial", async (req, res) => {
 });
 
 // Delete book
-router.delete("/:serial", async (req, res) => {
+router.delete("/:serial", adminAuth, async (req, res) => {
   try {
     await Book.deleteOne({ serialNumber: req.params.serial });
     res.json({ message: "Book deleted" });

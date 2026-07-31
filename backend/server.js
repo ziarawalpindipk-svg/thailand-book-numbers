@@ -43,6 +43,7 @@ app.use("/api/books", require("./routes/books"));
 app.use("/api/offers", require("./routes/offers"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/payments", require("./routes/payments"));
+app.use("/api/admin", require("./routes/admin"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Thailand Books API is running" });

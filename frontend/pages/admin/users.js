@@ -1,7 +1,11 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import useAdminGuard from "../../utils/useAdminGuard";
 
 export default function AdminUsers() {
+  const { checking } = useAdminGuard();
+  if (checking) return null;
+
   return (
     <div>
       <Header />

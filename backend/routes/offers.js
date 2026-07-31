@@ -3,9 +3,11 @@ const router = express.Router();
 const Offer = require("../models/Offer");
 const getCycleDate = require("../utils/dateCycle");
 const sanitizePhone = require("../utils/sanitizePhone");
+const adminAuth = require("../middleware/adminAuth");
 
-// Get all offers
-router.get("/", async (req, res) => {
+// Get all offers - admin only, this contains customer names/numbers so it
+// must not be publicly readable.
+router.get("/", adminAuth, async (req, res) => {
   try {
     const offers = await Offer.find();
     res.json(offers);
@@ -33,8 +35,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update offer status (accept/reject)
-router.put("/:id", async (req, res) => {
+// Update offer status (accept/reject) - admin only
+router.put("/:id", adminAuth, async (req, res) => {
   try {
     const updated = await Offer.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updated) return res.status(404).json({ message: "Offer not found" });
@@ -44,8 +46,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete offer
-router.delete("/:id", async (req, res) => {
+// Delete offer - admin only
+router.delete("/:id", adminAuth, async (req, res) => {
   try {
     await Offer.findByIdAndDelete(req.params.id);
     res.json({ message: "Offer deleted" });
