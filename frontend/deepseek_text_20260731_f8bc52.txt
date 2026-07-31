@@ -1,0 +1,49 @@
+🔄 Current Bid Cycle
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 Cycle Information
+
+Current Cycle: [Cycle A/B]
+Start Date: [Date]
+End Date: [Date]
+Days Remaining: [X] days
+
+🎯 Winning Number: Not yet announced
+📢 Will be announced on: [Date]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⭐ IMPORTANT RULE:
+ONLY ONE (1) Book Number wins each cycle!
+ALL users who bid on that number get the reward!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏰ Next Cycle
+
+Next Cycle Starts: [Date]
+Days Until Next Cycle: [X] days
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Important Rules
+
+• Bidding is open during the current cycle
+• All bids reset at the start of each new cycle
+• Each cycle lasts 15 days
+• ONLY ONE winning number per cycle
+• Access to books is granted for 15 days after payment
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 Your Status
+
+Selected Books: [Count]
+Total Bids: [Count]
+Total Potential Reward: [Amount] [Currency]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Tip: Place your bids early in the cycle for the best chances!
+Remember: Only 1 number wins, so choose wisely!
