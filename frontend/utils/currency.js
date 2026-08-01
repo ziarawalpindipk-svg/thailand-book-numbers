@@ -25,6 +25,10 @@ export function getSavedCurrency() {
 export function saveCurrency(code) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(STORAGE_KEY, code);
+  // Broadcast the change so any component showing a converted amount
+  // (offer dialog, cart, checkout) updates immediately, even though they
+  // aren't directly connected to this selector component.
+  window.dispatchEvent(new CustomEvent("tb-currency-changed", { detail: code }));
 }
 
 export function getCurrencyInfo(code) {

@@ -37,6 +37,18 @@ app.use("/api/offers", (req, res, next) => {
   }
   return res.status(503).json({ message: "Database not connected. Set MONGODB_URI in your .env file." });
 });
+app.use("/api/news", (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: "Database not connected. Set MONGODB_URI in your .env file." });
+  }
+  next();
+});
+app.use("/api/ads", (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: "Database not connected. Set MONGODB_URI in your .env file." });
+  }
+  next();
+});
 
 // Routes
 app.use("/api/books", require("./routes/books"));
@@ -44,6 +56,8 @@ app.use("/api/offers", require("./routes/offers"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/payments", require("./routes/payments"));
 app.use("/api/admin", require("./routes/admin"));
+app.use("/api/news", require("./routes/news"));
+app.use("/api/ads", require("./routes/ads"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Thailand Books API is running" });

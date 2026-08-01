@@ -1,7 +1,17 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import useAdminGuard from "../../utils/useAdminGuard";
+
+const ADMIN_LINKS = [
+  { href: "/admin/books", label: "📚 Manage Books" },
+  { href: "/admin/offers", label: "📥 Manage Offers" },
+  { href: "/admin/payments", label: "💳 Payments" },
+  { href: "/admin/users", label: "👤 Users" },
+  { href: "/admin/news", label: "📰 Manage News" },
+  { href: "/admin/image-ads", label: "🖼️ Image Ads" },
+];
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -41,6 +51,19 @@ export default function AdminDashboard() {
             <h2>Total Revenue</h2>
             <p>$0</p>
           </div>
+        </div>
+
+        <h2 className="font-bold mt-8 mb-3">Quick Links</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {ADMIN_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="border rounded p-3 text-center bg-teal-50 hover:bg-teal-100"
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
       </main>
       <Footer />

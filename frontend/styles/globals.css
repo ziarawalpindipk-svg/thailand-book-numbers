@@ -5,3 +5,19 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Attention-grabbing "zoom in / zoom out" animation for the share button */
+@keyframes tb-zoom-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+.tb-share-btn {
+  animation: tb-zoom-pulse 1.8s ease-in-out infinite;
+}

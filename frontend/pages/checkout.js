@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getCart, clearCart } from "../utils/cart";
+import { getSavedCurrency, formatFromUSD } from "../utils/currency";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const OWNER_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
@@ -28,10 +29,17 @@ export default function Checkout() {
     notes: "",
   });
   const [loading, setLoading] = useState(false);
+  const [currency, setCurrency] = useState("USD");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setCartItems(getCart());
+    setCurrency(getSavedCurrency());
+    function handleCurrencyChange(e) {
+      setCurrency(e.detail);
+    }
+    window.addEventListener("tb-currency-changed", handleCurrencyChange);
+    return () => window.removeEventListener("tb-currency-changed", handleCurrencyChange);
   }, []);
 
   function handleChange(e) {
@@ -126,6 +134,11 @@ export default function Checkout() {
           <p className="max-w-md mx-auto mt-2 text-sm text-gray-600">
             {cartItems.length} book(s) in this offer, total $
             {cartItems.reduce((s, i) => s + i.total, 0)}
+            {currency !== "USD" && (
+              <span className="block text-xs">
+                ≈ {formatFromUSD(cartItems.reduce((s, i) => s + i.total, 0), currency)}
+              </span>
+            )}
           </p>
         )}
 

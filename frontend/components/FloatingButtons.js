@@ -73,6 +73,24 @@ export default function FloatingButtons() {
     window.open(`https://wa.me/${clean}?text=${msg}`, "_blank");
   }
 
+  async function handleShare() {
+    const shareData = {
+      title: "Thailand Book Numbers - Overseas",
+      text: "Discover 000 to 999 unique Thai Book Numbers - make your offer!",
+      url: window.location.origin,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled the share sheet - nothing to do.
+      }
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(shareData.url);
+      alert("Link copied! You can now paste it anywhere to share.");
+    }
+  }
+
   return (
     <>
       <div className="fixed right-4 bottom-20 md:bottom-6 flex flex-col gap-3 z-40">
@@ -96,6 +114,15 @@ export default function FloatingButtons() {
             📲
           </button>
         )}
+
+        <button
+          onClick={handleShare}
+          className="tb-share-btn w-12 h-12 rounded-full bg-blue-500 text-white text-2xl shadow-lg flex items-center justify-center"
+          aria-label="Share this website"
+          title="Share this website"
+        >
+          🔗
+        </button>
 
         {OWNER_WHATSAPP && (
           <button

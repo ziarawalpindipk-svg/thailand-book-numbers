@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import CurrencySelector from "./CurrencySelector";
+import GoogleTranslate from "./GoogleTranslate";
 import { getCart } from "../utils/cart";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/how-to-offer", label: "How to Offer" },
+  { href: "/news", label: "News" },
   { href: "/cart", label: "Selected" },
   { href: "/login", label: "Login" },
   { href: "/register", label: "Register" },
@@ -31,15 +34,15 @@ export default function Header() {
     <header className="bg-teal-800 text-white p-4 relative">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         <Link href="/" onClick={() => setMenuOpen(false)}>
-          <span className="text-lg sm:text-xl font-bold cursor-pointer">
+          <span className="notranslate text-lg sm:text-xl font-bold cursor-pointer">
             Thailand Book Numbers - Overseas
           </span>
         </Link>
 
         {/* Desktop nav - hidden on small screens */}
-        <nav className="hidden md:flex space-x-4 items-center">
+        <nav className="hidden md:flex flex-wrap gap-x-3 gap-y-1 items-center justify-end">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="relative">
+            <Link key={link.href} href={link.href} className="relative text-sm">
               {link.label}
               {link.href === "/cart" && count > 0 && (
                 <span className="absolute -top-2 -right-3 bg-coral-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
@@ -49,6 +52,7 @@ export default function Header() {
             </Link>
           ))}
           <CurrencySelector />
+          <GoogleTranslate />
         </nav>
 
         {/* Hamburger button - only visible on small screens */}
@@ -81,8 +85,9 @@ export default function Header() {
               )}
             </Link>
           ))}
-          <div className="pb-2 flex items-center gap-3">
+          <div className="pb-2 flex items-center gap-3 flex-wrap">
             <CurrencySelector />
+            <GoogleTranslate />
           </div>
         </nav>
       )}

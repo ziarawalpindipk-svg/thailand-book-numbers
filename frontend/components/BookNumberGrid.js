@@ -31,6 +31,12 @@ export default function BookNumberGrid({ onSelectionChange }) {
   useEffect(() => {
     refreshSelected();
     setCurrency(getSavedCurrency());
+
+    function handleCurrencyChange(e) {
+      setCurrency(e.detail);
+    }
+    window.addEventListener("tb-currency-changed", handleCurrencyChange);
+    return () => window.removeEventListener("tb-currency-changed", handleCurrencyChange);
   }, []);
 
   function refreshSelected() {
@@ -161,8 +167,8 @@ export default function BookNumberGrid({ onSelectionChange }) {
               >
                 −
               </button>
-              <span className="text-xl font-bold min-w-[50px] text-center">
-                ${offerPrice}
+              <span className="text-xl font-bold min-w-[90px] text-center">
+                {formatFromUSD(offerPrice, currency)}
               </span>
               <button
                 onClick={() => setOfferPrice((p) => p + 1)}
@@ -172,7 +178,7 @@ export default function BookNumberGrid({ onSelectionChange }) {
               </button>
             </div>
             <p className="text-center text-xs text-gray-500 mb-4">
-              ≈ {formatFromUSD(offerPrice, currency)}
+              Recorded as ${offerPrice} USD{currency !== "USD" ? " (offers are tracked in USD)" : ""}
             </p>
 
             <div className="flex gap-2">
