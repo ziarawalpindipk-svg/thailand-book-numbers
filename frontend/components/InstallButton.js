@@ -54,7 +54,7 @@ export default function InstallButton() {
     <div className="inline-block relative">
       <button
         onClick={handleClick}
-        className="bg-white text-red-600 border border-white px-3 py-1 rounded text-sm font-semibold"
+        className="bg-white text-teal-700 border border-white px-3 py-1 rounded text-sm font-semibold"
       >
         📲 Install App
       </button>
@@ -64,7 +64,7 @@ export default function InstallButton() {
           choose <strong>"Add to Home Screen"</strong>.
           <button
             onClick={() => setShowIOSHint(false)}
-            className="block mt-2 text-red-600 underline"
+            className="block mt-2 text-teal-700 underline"
           >
             Got it
           </button>

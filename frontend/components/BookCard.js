@@ -37,7 +37,7 @@ export default function BookCard({ serial }) {
       </div>
       <button
         onClick={handleAddToCart}
-        className="bg-red-600 text-white px-4 py-2 rounded mt-2 w-full"
+        className="bg-coral-500 text-white px-4 py-2 rounded mt-2 w-full"
       >
         {added ? "Added ✓" : "Add to Cart"}
       </button>

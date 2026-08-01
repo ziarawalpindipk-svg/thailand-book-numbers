@@ -104,7 +104,7 @@ export default function BookNumberGrid({ onSelectionChange }) {
               onClick={() => setRange(r)}
               className={`text-xs px-2 py-1 rounded border ${
                 r.label === range.label
-                  ? "bg-red-600 text-white border-red-600"
+                  ? "bg-coral-500 text-white border-coral-500"
                   : "bg-white text-gray-700 border-gray-300"
               }`}
             >
@@ -124,8 +124,8 @@ export default function BookNumberGrid({ onSelectionChange }) {
               onClick={() => openDialog(num)}
               className={`aspect-square rounded border-2 text-sm font-semibold flex items-center justify-center transition ${
                 isSelected
-                  ? "bg-green-50 border-green-600 text-green-700"
-                  : "bg-white border-gray-300 text-gray-800 hover:border-red-500"
+                  ? "bg-teal-50 border-teal-600 text-teal-700"
+                  : "bg-white border-gray-300 text-gray-800 hover:border-coral-400"
               }`}
             >
               {num}
@@ -149,7 +149,7 @@ export default function BookNumberGrid({ onSelectionChange }) {
             className="bg-white rounded-lg p-6 max-w-xs w-full"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-center text-2xl font-bold text-red-600 mb-4">
+            <h3 className="text-center text-2xl font-bold text-coral-600 mb-4">
               Book #{dialogSerial}
             </h3>
 
@@ -178,7 +178,7 @@ export default function BookNumberGrid({ onSelectionChange }) {
             <div className="flex gap-2">
               <button
                 onClick={handleAdd}
-                className="flex-1 bg-red-600 text-white py-2 rounded font-semibold"
+                className="flex-1 bg-coral-500 text-white py-2 rounded font-semibold"
               >
                 {added ? "Added ✓" : "Add"}
               </button>

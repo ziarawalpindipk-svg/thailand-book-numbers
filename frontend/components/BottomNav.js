@@ -29,7 +29,7 @@ export default function BottomNav() {
         <span className="text-lg">📚</span>
         Selected
         {count > 0 && (
-          <span className="absolute -top-1 right-1 bg-red-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+          <span className="absolute -top-1 right-1 bg-coral-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
             {count}
           </span>
         )}

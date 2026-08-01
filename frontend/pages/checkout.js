@@ -120,7 +120,7 @@ export default function Checkout() {
         {cartItems.length === 0 ? (
           <p className="max-w-md mx-auto mt-4">
             Your cart is empty. Go back to the{" "}
-            <a href="/" className="text-red-600 underline">homepage</a> and add a book first.
+            <a href="/" className="text-coral-600 underline">homepage</a> and add a book first.
           </p>
         ) : (
           <p className="max-w-md mx-auto mt-2 text-sm text-gray-600">
@@ -196,7 +196,7 @@ export default function Checkout() {
           <button
             type="submit"
             disabled={loading || cartItems.length === 0}
-            className="bg-red-600 text-white px-4 py-2 rounded w-full disabled:opacity-50"
+            className="bg-coral-500 text-white px-4 py-2 rounded w-full disabled:opacity-50"
           >
             {loading ? "Sending..." : "Send Offer"}
           </button>

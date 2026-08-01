@@ -24,7 +24,7 @@ export default function Cart() {
         <CartSummary items={items} onRemove={handleRemove} />
         {items.length > 0 && (
           <Link href="/checkout">
-            <button className="bg-red-600 text-white px-4 py-2 rounded mt-4 w-full">
+            <button className="bg-coral-500 text-white px-4 py-2 rounded mt-4 w-full">
               Proceed to Checkout
             </button>
           </Link>

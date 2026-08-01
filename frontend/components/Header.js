@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import InstallButton from "./InstallButton";
 import CurrencySelector from "./CurrencySelector";
 import { getCart } from "../utils/cart";
 
@@ -29,7 +28,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-gray-900 text-white p-4 relative">
+    <header className="bg-teal-800 text-white p-4 relative">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         <Link href="/" onClick={() => setMenuOpen(false)}>
           <span className="text-lg sm:text-xl font-bold cursor-pointer">
@@ -43,14 +42,13 @@ export default function Header() {
             <Link key={link.href} href={link.href} className="relative">
               {link.label}
               {link.href === "/cart" && count > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-2 -right-3 bg-coral-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                   {count}
                 </span>
               )}
             </Link>
           ))}
           <CurrencySelector />
-          <InstallButton />
         </nav>
 
         {/* Hamburger button - only visible on small screens */}
@@ -73,11 +71,11 @@ export default function Header() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="border-b border-gray-700 pb-2 flex items-center justify-between"
+              className="border-b border-teal-600 pb-2 flex items-center justify-between"
             >
               <span>{link.label}</span>
               {link.href === "/cart" && count > 0 && (
-                <span className="bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="bg-coral-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {count}
                 </span>
               )}
@@ -85,7 +83,6 @@ export default function Header() {
           ))}
           <div className="pb-2 flex items-center gap-3">
             <CurrencySelector />
-            <InstallButton />
           </div>
         </nav>
       )}

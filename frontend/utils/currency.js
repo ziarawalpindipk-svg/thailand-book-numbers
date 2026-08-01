@@ -5,6 +5,7 @@
 // update them here occasionally, or swap in a live FX API later if needed.
 export const CURRENCIES = [
   { code: "USD", name: "US Dollar", symbol: "$", rate: 1 },
+  { code: "KWD", name: "Kuwaiti Dinar", symbol: "KWD", rate: 0.31 },
   { code: "PKR", name: "Pakistani Rupee", symbol: "Rs", rate: 278 },
   { code: "SAR", name: "Saudi Riyal", symbol: "SAR", rate: 3.75 },
   { code: "AED", name: "UAE Dirham", symbol: "AED", rate: 3.67 },
