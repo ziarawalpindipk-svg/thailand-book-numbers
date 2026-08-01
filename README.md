@@ -83,6 +83,17 @@ Open http://localhost:3000 in your browser.
 - One-click "Install App" / Add to Home Screen (PWA)
 - Adsterra ad slots (Home page, Book Details page, site-wide Social Bar)
 
+## Admin Panel Access
+`/admin` and all its sub-pages (Books, Offers, Payments, Users) are protected
+by a password - only people who know it can log in and manage the site.
+1. On Render, open the **backend** service -> Environment -> add:
+   `ADMIN_PASSWORD` = a strong password only you know.
+2. Visit `https://your-frontend-url.onrender.com/admin/login` and log in with
+   that password. You'll stay logged in for 12 hours, then need to log in
+   again.
+3. This is enforced on the backend too (not just hidden on the frontend), so
+   even a direct API request without the right login token is rejected.
+
 ## Adding Your Adsterra Ads
 1. Open `frontend/config/ads.js`.
 2. Log in to your Adsterra dashboard, create an ad unit for this site, and copy

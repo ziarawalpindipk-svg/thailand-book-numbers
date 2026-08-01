@@ -114,7 +114,7 @@ export default function Checkout() {
   return (
     <div>
       <Header />
-      <main className="p-6">
+      <main className="p-6 pb-20 md:pb-6">
         <h1 className="text-2xl font-bold">Submit Your Offer</h1>
 
         {cartItems.length === 0 ? (

@@ -19,7 +19,7 @@ export default function Cart() {
   return (
     <div>
       <Header />
-      <main className="p-6 max-w-3xl mx-auto">
+      <main className="p-6 max-w-3xl mx-auto pb-20 md:pb-6">
         <h1 className="text-2xl font-bold">My Cart</h1>
         <CartSummary items={items} onRemove={handleRemove} />
         {items.length > 0 && (

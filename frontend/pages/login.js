@@ -41,7 +41,7 @@ export default function Login() {
   return (
     <div>
       <Header />
-      <main className="p-6 max-w-md mx-auto">
+      <main className="p-6 max-w-md mx-auto pb-20 md:pb-6">
         <h1 className="text-2xl font-bold">Login</h1>
         {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
         <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
