@@ -16,13 +16,13 @@ router.get("/", adminAuth, async (req, res) => {
   }
 });
 
-// Submit new offer (with min $1 validation + auto cycle date)
+// Submit new offer (with minimum-amount validation + auto cycle date)
 router.post("/", async (req, res) => {
   try {
     const books = req.body.books || [];
     for (let b of books) {
       if (b.pricePerBook < 1) {
-        return res.status(400).json({ message: "Price cannot be below $1" });
+        return res.status(400).json({ message: "Offer amount cannot be below 1" });
       }
     }
 
@@ -64,7 +64,7 @@ router.delete("/:id", adminAuth, async (req, res) => {
 // their contact info - it is never used as the link's destination.
 router.post("/send-whatsapp", async (req, res) => {
   try {
-    const { customerName, country, whatsapp, ownerWhatsapp, books = [], totalAmount, cycleDate } = req.body;
+    const { customerName, country, whatsapp, ownerWhatsapp, books = [], totalAmount, currency, cycleDate } = req.body;
 
     const cleanOwnerNumber = sanitizePhone(ownerWhatsapp);
 
@@ -72,14 +72,16 @@ router.post("/send-whatsapp", async (req, res) => {
       return res.status(400).json({ message: "ownerWhatsapp (the site owner's number) is required" });
     }
 
+    const currencyLabel = currency || "USD";
+
     let message = `THAILAND BOOK NUMBERS / OVERSEAS\nORDER OFFER\n-----------------------------\n`;
     message += `Cycle Date: ${cycleDate}\nCustomer: ${customerName}\nCountry: ${country}\nCustomer WhatsApp: ${whatsapp}\n\nSelected Books:\n`;
 
     books.forEach((b) => {
-      message += `#${b.serial} x ${b.quantity} = $${b.total}\n`;
+      message += `#${b.serial} x ${b.quantity} = ${b.total} ${currencyLabel}\n`;
     });
 
-    message += `-----------------------------\nTotal Offer: $${totalAmount} USD\n`;
+    message += `-----------------------------\nTotal Offer: ${totalAmount} ${currencyLabel}\n`;
 
     const waLink = `https://wa.me/${cleanOwnerNumber}?text=${encodeURIComponent(message)}`;
     res.json({ waLink });

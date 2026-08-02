@@ -12,9 +12,11 @@ export default function BottomNav() {
     refresh();
     // Refresh when returning to the tab / after navigation
     window.addEventListener("focus", refresh);
+    window.addEventListener("tb-cart-changed", refresh);
     const interval = setInterval(refresh, 1500);
     return () => {
       window.removeEventListener("focus", refresh);
+      window.removeEventListener("tb-cart-changed", refresh);
       clearInterval(interval);
     };
   }, []);

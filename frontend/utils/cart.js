@@ -17,21 +17,26 @@ export function getCart() {
 export function saveCart(items) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(CART_KEY, JSON.stringify(items));
+  // Let every component showing the cart (grid, header badge, bottom nav,
+  // cart page) know right away instead of waiting on a polling interval.
+  window.dispatchEvent(new CustomEvent("tb-cart-changed"));
 }
 
-export function addToCart(serial, pricePerBook, quantity = 1) {
+export function addToCart(serial, pricePerBook, quantity = 1, currency = "USD") {
   const items = getCart();
   const existing = items.find((i) => i.serial === serial);
 
   if (existing) {
     existing.quantity += quantity;
     existing.pricePerBook = pricePerBook;
+    existing.currency = currency;
     existing.total = existing.quantity * existing.pricePerBook;
   } else {
     items.push({
       serial,
       quantity,
       pricePerBook,
+      currency,
       total: quantity * pricePerBook,
     });
   }

@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import BookNumberGrid from "../components/BookNumberGrid";
 import AdSlot from "../components/AdSlot";
 import ImageAdCard from "../components/ImageAdCard";
-import { HOME_BANNER_AD } from "../config/ads";
+import { HOME_BANNER_AD, BOOK_DETAILS_BANNER_AD } from "../config/ads";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -37,9 +37,14 @@ export default function Home() {
           </Link>
         </section>
 
-        <AdSlot html={HOME_BANNER_AD} className="flex justify-center mb-6" />
+        {/* Thin banner near the top - takes up little space */}
+        <AdSlot html={BOOK_DETAILS_BANNER_AD} className="flex justify-center mb-6" />
 
         <BookNumberGrid />
+
+        {/* Larger banner after the grid - shown to visitors who are
+            already engaged, right before they scroll further */}
+        <AdSlot html={HOME_BANNER_AD} className="flex justify-center mt-8 mb-2" />
 
         {ads.length > 0 && (
           <section className="mt-8">

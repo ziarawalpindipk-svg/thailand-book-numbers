@@ -94,6 +94,32 @@ by a password - only people who know it can log in and manage the site.
 3. This is enforced on the backend too (not just hidden on the frontend), so
    even a direct API request without the right login token is rejected.
 
+## New Features (Number Grid, Currency, Translate, Share, News, Image Ads)
+
+- **Number grid Home page**: browse books 000-999 via search or quick-jump
+  ranges, tap a number to make an offer (min $1 USD).
+- **Currency selector** (top menu): purely for display convenience - shows
+  an approximate conversion next to the USD amount. Actual offers are always
+  recorded and confirmed in USD. Update the static rates in
+  `frontend/utils/currency.js` occasionally if they drift too far from
+  reality.
+- **Translate button** (top menu): a Google Translate widget - visitors can
+  switch the whole page to their language with one click. No translation
+  files to maintain.
+- **Share button** (floating, bottom-right, blue, pulsing): uses the
+  phone's native share sheet, or copies the link on desktop.
+- **Install App button** (floating, bottom-right, coral): works as a real
+  1-tap install on Android/Chrome; shows manual instructions on iOS/other
+  browsers (Apple does not allow 1-tap install from the web - this is a
+  platform restriction, not something any site can change).
+- **How to Offer page** (`/how-to-offer`): step-by-step guide for customers.
+- **News/Media page** (`/news`) + **Admin > Manage News**: add headline,
+  image URL, and text from the admin panel - no coding needed, publishes
+  immediately.
+- **Image Ads** (shown on Home page) + **Admin > Image Ads**: paste an
+  image URL and an optional link - it appears as a card on the Home page.
+  This is separate from Adsterra; it's for your own promos/sponsors.
+
 ## Adding Your Adsterra Ads
 1. Open `frontend/config/ads.js`.
 2. Log in to your Adsterra dashboard, create an ad unit for this site, and copy

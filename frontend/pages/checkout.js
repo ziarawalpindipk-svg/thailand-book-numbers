@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getCart, clearCart } from "../utils/cart";
-import { getSavedCurrency, formatFromUSD } from "../utils/currency";
+import { getCurrencyInfo } from "../utils/currency";
+import { COUNTRIES } from "../utils/countries";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const OWNER_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
@@ -23,28 +24,32 @@ export default function Checkout() {
   const [cartItems, setCartItems] = useState([]);
   const [form, setForm] = useState({
     customerName: "",
-    country: "Pakistan",
+    country: "Kuwait",
     whatsapp: "",
     email: "",
     notes: "",
   });
   const [loading, setLoading] = useState(false);
-  const [currency, setCurrency] = useState("USD");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setCartItems(getCart());
-    setCurrency(getSavedCurrency());
-    function handleCurrencyChange(e) {
-      setCurrency(e.detail);
+    function handleCartChange() {
+      setCartItems(getCart());
     }
-    window.addEventListener("tb-currency-changed", handleCurrencyChange);
-    return () => window.removeEventListener("tb-currency-changed", handleCurrencyChange);
+    window.addEventListener("tb-cart-changed", handleCartChange);
+    return () => window.removeEventListener("tb-cart-changed", handleCartChange);
   }, []);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
+
+  // All items share one currency (switching currency clears the cart), so
+  // it's safe to read it from the first item.
+  const currency = cartItems[0]?.currency || "USD";
+  const currencyInfo = getCurrencyInfo(currency);
+  const totalAmount = cartItems.reduce((s, i) => s + i.total, 0);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -72,7 +77,6 @@ export default function Checkout() {
       pricePerBook: i.pricePerBook,
       total: i.total,
     }));
-    const totalAmount = books.reduce((sum, b) => sum + b.total, 0);
 
     setLoading(true);
     try {
@@ -80,7 +84,13 @@ export default function Checkout() {
       const offerRes = await fetch(`${API_URL}/offers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, whatsapp: cleanCustomerWhatsapp, books, totalAmount }),
+        body: JSON.stringify({
+          ...form,
+          whatsapp: cleanCustomerWhatsapp,
+          books,
+          totalAmount,
+          currency,
+        }),
       });
       const offerData = await offerRes.json();
       if (!offerRes.ok) {
@@ -100,6 +110,7 @@ export default function Checkout() {
           ownerWhatsapp: sanitizePhone(OWNER_WHATSAPP),
           books,
           totalAmount,
+          currency,
           cycleDate: offerData.cycleDate,
         }),
       });
@@ -132,13 +143,7 @@ export default function Checkout() {
           </p>
         ) : (
           <p className="max-w-md mx-auto mt-2 text-sm text-gray-600">
-            {cartItems.length} book(s) in this offer, total $
-            {cartItems.reduce((s, i) => s + i.total, 0)}
-            {currency !== "USD" && (
-              <span className="block text-xs">
-                ≈ {formatFromUSD(cartItems.reduce((s, i) => s + i.total, 0), currency)}
-              </span>
-            )}
+            {cartItems.length} book(s) in this offer, total {currencyInfo.symbol} {totalAmount}
           </p>
         )}
 
@@ -167,9 +172,9 @@ export default function Checkout() {
               onChange={handleChange}
               required
             >
-              <option>Pakistan</option>
-              <option>USA</option>
-              <option>UK</option>
+              {COUNTRIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
             </select>
           </div>
           <div>

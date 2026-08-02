@@ -81,7 +81,7 @@ export default function AdminOffers() {
                 <tr key={offer._id}>
                   <td className="border p-2">{offer._id.slice(-6)}</td>
                   <td className="border p-2">{offer.customerName}</td>
-                  <td className="border p-2">${offer.totalAmount}</td>
+                  <td className="border p-2">{offer.totalAmount} {offer.currency || "USD"}</td>
                   <td className="border p-2">{offer.status}</td>
                   <td className="border p-2">
                     <button

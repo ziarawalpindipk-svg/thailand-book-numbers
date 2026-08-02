@@ -1,18 +1,11 @@
-import { useEffect, useState } from "react";
-import { getSavedCurrency, formatFromUSD } from "../utils/currency";
+import { getCurrencyInfo } from "../utils/currency";
 
 export default function CartSummary({ items = [], onRemove }) {
-  const [currency, setCurrency] = useState("USD");
   const total = items.reduce((sum, item) => sum + (item.total || 0), 0);
-
-  useEffect(() => {
-    setCurrency(getSavedCurrency());
-    function handleChange(e) {
-      setCurrency(e.detail);
-    }
-    window.addEventListener("tb-currency-changed", handleChange);
-    return () => window.removeEventListener("tb-currency-changed", handleChange);
-  }, []);
+  // All items in the cart always share one currency (switching currency
+  // clears the cart first), so it's safe to just read it from the first item.
+  const currency = items[0]?.currency || "USD";
+  const symbol = getCurrencyInfo(currency).symbol;
 
   return (
     <div className="border rounded p-4 mt-4">
@@ -23,16 +16,11 @@ export default function CartSummary({ items = [], onRemove }) {
         <ul>
           {items.map((item, idx) => (
             <li key={idx} className="flex justify-between items-center border-b py-1">
-              <span>Book #{item.serial} x{item.quantity} @ ${item.pricePerBook}</span>
+              <span>
+                Book #{item.serial} x{item.quantity} @ {symbol} {item.pricePerBook}
+              </span>
               <span className="flex items-center gap-2">
-                <span className="text-right">
-                  ${item.total}
-                  {currency !== "USD" && (
-                    <span className="block text-xs text-gray-500">
-                      {formatFromUSD(item.total, currency)}
-                    </span>
-                  )}
-                </span>
+                {symbol} {item.total}
                 {onRemove && (
                   <button
                     onClick={() => onRemove(item.serial)}
@@ -48,14 +36,7 @@ export default function CartSummary({ items = [], onRemove }) {
       )}
       <div className="flex justify-between font-bold mt-2">
         <span>Total</span>
-        <span className="text-right">
-          ${total}
-          {currency !== "USD" && (
-            <span className="block text-xs text-gray-500 font-normal">
-              {formatFromUSD(total, currency)}
-            </span>
-          )}
-        </span>
+        <span>{symbol} {total}</span>
       </div>
     </div>
   );

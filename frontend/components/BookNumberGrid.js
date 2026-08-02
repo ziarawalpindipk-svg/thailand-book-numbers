@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { addToCart, getCart } from "../utils/cart";
-import { getSavedCurrency, formatFromUSD } from "../utils/currency";
+import { getSavedCurrency, getCurrencyInfo } from "../utils/currency";
 
 const RANGES = [
   { label: "000-099", start: 0, end: 99 },
@@ -34,9 +34,17 @@ export default function BookNumberGrid({ onSelectionChange }) {
 
     function handleCurrencyChange(e) {
       setCurrency(e.detail);
+      refreshSelected(); // cart may have just been cleared by the currency switch
+    }
+    function handleCartChange() {
+      refreshSelected();
     }
     window.addEventListener("tb-currency-changed", handleCurrencyChange);
-    return () => window.removeEventListener("tb-currency-changed", handleCurrencyChange);
+    window.addEventListener("tb-cart-changed", handleCartChange);
+    return () => {
+      window.removeEventListener("tb-currency-changed", handleCurrencyChange);
+      window.removeEventListener("tb-cart-changed", handleCartChange);
+    };
   }, []);
 
   function refreshSelected() {
@@ -72,11 +80,13 @@ export default function BookNumberGrid({ onSelectionChange }) {
 
   function handleAdd() {
     if (offerPrice < 1) return;
-    addToCart(dialogSerial, offerPrice, 1);
+    addToCart(dialogSerial, offerPrice, 1, currency);
     refreshSelected();
     setAdded(true);
     setTimeout(() => closeDialog(), 700);
   }
+
+  const currencyInfo = getCurrencyInfo(currency);
 
   return (
     <div>
@@ -159,16 +169,18 @@ export default function BookNumberGrid({ onSelectionChange }) {
               Book #{dialogSerial}
             </h3>
 
-            <label className="block text-sm mb-1">Your Offer (min $1 USD)</label>
-            <div className="flex items-center justify-center gap-3 mb-2">
+            <label className="block text-sm mb-1">
+              Your Offer (min 1 {currencyInfo.code})
+            </label>
+            <div className="flex items-center justify-center gap-3 mb-4">
               <button
                 onClick={() => setOfferPrice((p) => Math.max(1, p - 1))}
                 className="w-10 h-10 rounded-full border text-lg"
               >
                 −
               </button>
-              <span className="text-xl font-bold min-w-[90px] text-center">
-                {formatFromUSD(offerPrice, currency)}
+              <span className="text-xl font-bold min-w-[110px] text-center">
+                {currencyInfo.symbol} {offerPrice}
               </span>
               <button
                 onClick={() => setOfferPrice((p) => p + 1)}
@@ -177,9 +189,6 @@ export default function BookNumberGrid({ onSelectionChange }) {
                 +
               </button>
             </div>
-            <p className="text-center text-xs text-gray-500 mb-4">
-              Recorded as ${offerPrice} USD{currency !== "USD" ? " (offers are tracked in USD)" : ""}
-            </p>
 
             <div className="flex gap-2">
               <button

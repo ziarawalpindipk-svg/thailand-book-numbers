@@ -10,6 +10,11 @@ export default function Cart() {
 
   useEffect(() => {
     setItems(getCart());
+    function handleCartChange() {
+      setItems(getCart());
+    }
+    window.addEventListener("tb-cart-changed", handleCartChange);
+    return () => window.removeEventListener("tb-cart-changed", handleCartChange);
   }, []);
 
   function handleRemove(serial) {
