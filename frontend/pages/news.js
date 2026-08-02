@@ -10,9 +10,15 @@ export default function News() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [slow, setSlow] = useState(false);
 
   useEffect(() => {
     fetchNews();
+    // If loading takes more than a few seconds, the backend is probably
+    // just waking up from being idle (normal on the free hosting tier) -
+    // let the visitor know instead of leaving them guessing.
+    const timer = setTimeout(() => setSlow(true), 4000);
+    return () => clearTimeout(timer);
   }, []);
 
   async function fetchNews() {
@@ -40,7 +46,11 @@ export default function News() {
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
         {loading ? (
-          <p>Loading news...</p>
+          <p className="text-gray-600">
+            {slow
+              ? "Still loading... the server may be waking up after being idle, this can take up to a minute the first time."
+              : "Loading news..."}
+          </p>
         ) : news.length === 0 ? (
           <p className="text-gray-500">No news posted yet. Check back soon!</p>
         ) : (

@@ -14,7 +14,7 @@ const STEPS = [
   },
   {
     title: "3. Set Your Offer",
-    text: "Enter how much you'd like to offer (minimum $1 USD). You can see the amount in your own currency too - just change the currency from the menu at the top.",
+    text: "Enter how much you'd like to offer (minimum 1, in whichever currency you've selected from the menu at the top).",
   },
   {
     title: "4. Add It to Your Selection",
@@ -58,9 +58,9 @@ export default function HowToOffer() {
         <div className="mt-8 bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-gray-700">
           <p className="font-semibold mb-1">A few important notes:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>Minimum offer per book is $1 USD.</li>
+            <li>Minimum offer per book is 1 unit of whichever currency you've selected.</li>
             <li>Sending an offer does not guarantee it will be accepted - the owner reviews every offer.</li>
-            <li>Currency selection is only for your convenience; offers are recorded and confirmed in USD.</li>
+            <li>You can pick your currency from the top menu before you start - switching later will clear your current selection.</li>
           </ul>
         </div>
       </main>

@@ -8,8 +8,6 @@ const NAV_LINKS = [
   { href: "/how-to-offer", label: "How to Offer" },
   { href: "/news", label: "News" },
   { href: "/cart", label: "Selected" },
-  { href: "/login", label: "Login" },
-  { href: "/register", label: "Register" },
 ];
 
 export default function Header() {

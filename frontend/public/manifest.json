@@ -1,11 +1,11 @@
 {
   "name": "Thailand Book Numbers - Overseas",
   "short_name": "TB Books",
-  "description": "Discover 999 unique Thai books and make your offer.",
+  "description": "Discover 000 to 999 unique Thai book numbers and make your offer.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#dc2626",
+  "theme_color": "#115e59",
   "icons": [
     {
       "src": "/icon-192.png",
