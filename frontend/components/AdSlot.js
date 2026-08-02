@@ -24,6 +24,13 @@ export default function AdSlot({ html, className = "" }) {
         Array.from(node.attributes).forEach((attr) =>
           script.setAttribute(attr.name, attr.value)
         );
+        // Scripts created via createElement default to running
+        // out-of-order (as if "async"). Ad networks like Adsterra rely on
+        // one script (setting window.atOptions) finishing BEFORE the next
+        // one (invoke.js) reads it - forcing async=false makes browsers
+        // execute them in the order they were inserted, like a normal
+        // parsed <script> tag would.
+        script.async = false;
         script.text = node.textContent;
         containerRef.current.appendChild(script);
       } else {

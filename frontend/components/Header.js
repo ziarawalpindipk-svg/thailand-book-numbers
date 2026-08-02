@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import CurrencySelector from "./CurrencySelector";
-import GoogleTranslate from "./GoogleTranslate";
 import { getCart } from "../utils/cart";
 
 const NAV_LINKS = [
@@ -93,9 +92,8 @@ export default function Header() {
 
       {/* Persistent utility bar - always visible on every page, regardless
           of whether the hamburger menu is open or closed. */}
-      <div className="bg-teal-700 text-white flex items-center justify-center gap-3 py-1.5 text-sm">
+      <div className="bg-teal-700 text-white flex items-center justify-center py-2 text-sm">
         <CurrencySelector />
-        <GoogleTranslate />
       </div>
     </header>
   );

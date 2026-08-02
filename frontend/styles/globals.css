@@ -22,24 +22,13 @@ body {
   animation: tb-zoom-pulse 1.8s ease-in-out infinite;
 }
 
-/* Google Translate widget styling: give it a visible white pill so it
-   reads clearly against the teal header/bar, and stop Google's own
-   floating banner iframe from pushing the whole page down. */
-.goog-te-banner-frame {
-  display: none !important;
-}
-body {
-  top: 0 !important;
-}
-.tb-google-translate .goog-te-gadget {
-  font-size: 0 !important; /* hides the "Powered by Google Translate" text */
-}
-.tb-google-translate .goog-te-gadget .goog-te-combo {
-  font-size: 13px;
-  color: #115e59; /* teal-800 */
-  background: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 4px 6px;
-  cursor: pointer;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }

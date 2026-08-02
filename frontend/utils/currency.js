@@ -3,18 +3,18 @@
 // whole numbers in THAT currency (1, 2, 3, 4...). Nothing is calculated
 // from or converted to USD.
 export const CURRENCIES = [
-  { code: "KWD", name: "Kuwaiti Dinar", symbol: "KWD" },
-  { code: "SAR", name: "Saudi Riyal", symbol: "SAR" },
-  { code: "AED", name: "UAE Dirham", symbol: "AED" },
-  { code: "QAR", name: "Qatari Riyal", symbol: "QAR" },
-  { code: "BHD", name: "Bahraini Dinar", symbol: "BHD" },
-  { code: "OMR", name: "Omani Rial", symbol: "OMR" },
-  { code: "USD", name: "US Dollar", symbol: "$" },
-  { code: "GBP", name: "British Pound", symbol: "£" },
-  { code: "EUR", name: "Euro", symbol: "€" },
-  { code: "PKR", name: "Pakistani Rupee", symbol: "Rs" },
-  { code: "INR", name: "Indian Rupee", symbol: "₹" },
-  { code: "THB", name: "Thai Baht", symbol: "฿" },
+  { code: "KWD", name: "Kuwaiti Dinar", symbol: "KWD", flag: "🇰🇼" },
+  { code: "SAR", name: "Saudi Riyal", symbol: "SAR", flag: "🇸🇦" },
+  { code: "AED", name: "UAE Dirham", symbol: "AED", flag: "🇦🇪" },
+  { code: "QAR", name: "Qatari Riyal", symbol: "QAR", flag: "🇶🇦" },
+  { code: "BHD", name: "Bahraini Dinar", symbol: "BHD", flag: "🇧🇭" },
+  { code: "OMR", name: "Omani Rial", symbol: "OMR", flag: "🇴🇲" },
+  { code: "USD", name: "US Dollar", symbol: "$", flag: "🇺🇸" },
+  { code: "GBP", name: "British Pound", symbol: "£", flag: "🇬🇧" },
+  { code: "EUR", name: "Euro", symbol: "€", flag: "🇪🇺" },
+  { code: "PKR", name: "Pakistani Rupee", symbol: "Rs", flag: "🇵🇰" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹", flag: "🇮🇳" },
+  { code: "THB", name: "Thai Baht", symbol: "฿", flag: "🇹🇭" },
 ];
 
 const STORAGE_KEY = "tb_currency";
