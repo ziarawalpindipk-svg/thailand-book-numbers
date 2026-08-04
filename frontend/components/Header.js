@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import CurrencySelector from "./CurrencySelector";
+import RandomTicker from "./RandomTicker";
 import { getCart } from "../utils/cart";
 
+// Labels shown to the user; hrefs are unchanged so nothing breaks.
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/how-to-offer", label: "How to Offer" },
-  { href: "/news", label: "News" },
+  { href: "/how-to-offer", label: "How to Play" },
+  { href: "/news", label: "Tips & News" },
   { href: "/cart", label: "Selected" },
 ];
 
@@ -39,23 +41,9 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Desktop nav - hidden on small screens */}
-          <nav className="hidden md:flex flex-wrap gap-x-3 gap-y-1 items-center justify-end">
-            {NAV_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="relative text-sm">
-                {link.label}
-                {link.href === "/cart" && count > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-coral-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
-                    {count}
-                  </span>
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Hamburger button - only visible on small screens */}
+          {/* Hamburger button - kept for extra/future items */}
           <button
-            className="md:hidden p-2"
+            className="p-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -65,10 +53,9 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile dropdown menu - just the page links, currency/translate
-            live in the persistent bar below so they never get hidden */}
+        {/* Hamburger dropdown menu */}
         {menuOpen && (
-          <nav className="md:hidden flex flex-col mt-3 space-y-3 max-w-6xl mx-auto px-1">
+          <nav className="flex flex-col mt-3 space-y-3 max-w-6xl mx-auto px-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -88,10 +75,28 @@ export default function Header() {
         )}
       </div>
 
-      {/* Persistent utility bar - always visible on every page, regardless
-          of whether the hamburger menu is open or closed. */}
-      <div className="bg-teal-700 text-white flex items-center justify-center py-2 text-sm">
-        <CurrencySelector />
+      {/* Persistent utility bar - always visible on every page. All 5
+          items sit on one line; on very narrow phones the row scrolls
+          sideways instead of wrapping, so it never breaks the layout. */}
+      <div className="bg-teal-700 text-white overflow-x-auto">
+        <div className="flex items-center gap-2 py-2 px-3 whitespace-nowrap w-max mx-auto">
+          <CurrencySelector />
+          {NAV_LINKS.filter((l) => l.href !== "/").map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="relative shrink-0 bg-white text-teal-800 rounded-full px-3 py-1 shadow-md border border-teal-100 font-semibold text-sm"
+            >
+              {link.label}
+              {link.href === "/cart" && count > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-coral-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </Link>
+          ))}
+          <RandomTicker />
+        </div>
       </div>
     </header>
   );
