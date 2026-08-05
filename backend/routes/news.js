@@ -24,6 +24,17 @@ router.post("/", adminAuth, async (req, res) => {
   }
 });
 
+// Admin only - edit a news item
+router.put("/:id", adminAuth, async (req, res) => {
+  try {
+    const updated = await News.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: "News item not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // Admin only - delete a news item
 router.delete("/:id", adminAuth, async (req, res) => {
   try {

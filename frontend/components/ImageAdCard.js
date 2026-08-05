@@ -4,7 +4,7 @@ export default function ImageAdCard({ ad }) {
     <img
       src={ad.imageUrl}
       alt={ad.altText || "Advertisement"}
-      className="w-full h-32 sm:h-40 object-cover rounded"
+      className="w-full h-32 sm:h-40 object-contain bg-gray-100 rounded"
     />
   );
 

@@ -64,7 +64,7 @@ router.delete("/:id", adminAuth, async (req, res) => {
 // their contact info - it is never used as the link's destination.
 router.post("/send-whatsapp", async (req, res) => {
   try {
-    const { customerName, country, whatsapp, ownerWhatsapp, books = [], totalAmount, currency, cycleDate } = req.body;
+    const { customerName, country, whatsapp, email, notes, ownerWhatsapp, books = [], totalAmount, currency, cycleDate } = req.body;
 
     const cleanOwnerNumber = sanitizePhone(ownerWhatsapp);
 
@@ -75,13 +75,21 @@ router.post("/send-whatsapp", async (req, res) => {
     const currencyLabel = currency || "USD";
 
     let message = `THAILAND BOOK NUMBERS / OVERSEAS\nORDER OFFER\n-----------------------------\n`;
-    message += `Cycle Date: ${cycleDate}\nCustomer: ${customerName}\nCountry: ${country}\nCustomer WhatsApp: ${whatsapp}\n\nSelected Books:\n`;
+    message += `Cycle Date: ${cycleDate}\nCustomer: ${customerName}\nCountry: ${country}\nCustomer WhatsApp: ${whatsapp}\n`;
+    if (email) {
+      message += `Email: ${email}\n`;
+    }
+    message += `\nSelected Books:\n`;
 
     books.forEach((b) => {
       message += `#${b.serial} x ${b.quantity} = ${b.total} ${currencyLabel}\n`;
     });
 
     message += `-----------------------------\nTotal Offer: ${totalAmount} ${currencyLabel}\n`;
+
+    if (notes) {
+      message += `\nNotes: ${notes}\n`;
+    }
 
     const waLink = `https://wa.me/${cleanOwnerNumber}?text=${encodeURIComponent(message)}`;
     res.json({ waLink });

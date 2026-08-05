@@ -31,6 +31,7 @@ export default function Checkout() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [waLink, setWaLink] = useState(null);
 
   useEffect(() => {
     setCartItems(getCart());
@@ -107,6 +108,8 @@ export default function Checkout() {
           customerName: form.customerName,
           country: form.country,
           whatsapp: cleanCustomerWhatsapp,
+          email: form.email,
+          notes: form.notes,
           ownerWhatsapp: sanitizePhone(OWNER_WHATSAPP),
           books,
           totalAmount,
@@ -119,10 +122,10 @@ export default function Checkout() {
       clearCart();
 
       if (waData.waLink) {
-        window.open(waData.waLink, "_blank");
+        setWaLink(waData.waLink);
+      } else {
+        router.push("/");
       }
-
-      router.push("/");
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -136,6 +139,32 @@ export default function Checkout() {
       <main className="p-6 pb-20 md:pb-6">
         <h1 className="text-2xl font-bold">Submit Your Offer</h1>
 
+        {waLink ? (
+          <div className="max-w-md mx-auto mt-6 text-center">
+            <p className="text-green-700 font-semibold mb-2">✅ Your offer has been recorded!</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Tap the button below to send it to the owner on WhatsApp - your
+              message is already written, just tap Send once WhatsApp opens.
+            </p>
+            <a
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-green-500 text-white px-6 py-3 rounded-full font-semibold shadow-md"
+            >
+              💬 Open WhatsApp
+            </a>
+            <p className="text-xs text-gray-500 mt-3">
+              If it doesn't open automatically, make sure WhatsApp or
+              WhatsApp Business is installed on this device, then tap the
+              button again.
+            </p>
+            <a href="/" className="inline-block mt-6 text-teal-700 underline text-sm">
+              ← Back to Home
+            </a>
+          </div>
+        ) : (
+        <>
         {cartItems.length === 0 ? (
           <p className="max-w-md mx-auto mt-4">
             Your cart is empty. Go back to the{" "}
@@ -219,6 +248,8 @@ export default function Checkout() {
             {loading ? "Sending..." : "Send Offer"}
           </button>
         </form>
+        </>
+        )}
       </main>
       <Footer />
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AdSlot from "../components/AdSlot";
+import RichText from "../components/RichText";
 import { HOME_BANNER_AD } from "../config/ads";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -62,7 +63,7 @@ export default function News() {
                   <img
                     src={item.imageUrl}
                     alt={item.title}
-                    className="w-full max-h-72 object-cover"
+                    className="w-full max-h-72 object-contain bg-gray-100"
                   />
                 )}
                 <div className="p-4">
@@ -70,7 +71,9 @@ export default function News() {
                   <p className="text-xs text-gray-400 mb-2">
                     {new Date(item.createdAt).toLocaleDateString()}
                   </p>
-                  <p className="text-sm text-gray-700 whitespace-pre-line">{item.content}</p>
+                  <p className="text-sm text-gray-700">
+                    <RichText text={item.content} />
+                  </p>
                 </div>
               </article>
             ))}

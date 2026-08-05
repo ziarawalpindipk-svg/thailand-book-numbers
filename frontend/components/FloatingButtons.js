@@ -70,7 +70,7 @@ export default function FloatingButtons() {
     const clean = sanitizePhone(OWNER_WHATSAPP);
     if (!clean) return;
     const msg = encodeURIComponent("Hi, I have a question about Thailand Book Numbers / Overseas.");
-    window.open(`https://wa.me/${clean}?text=${msg}`, "_blank");
+    return `https://wa.me/${clean}?text=${msg}`;
   }
 
   async function handleShare() {
@@ -125,13 +125,15 @@ export default function FloatingButtons() {
         </button>
 
         {OWNER_WHATSAPP && (
-          <button
-            onClick={openWhatsApp}
+          <a
+            href={openWhatsApp()}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-green-500 text-white text-2xl shadow-lg flex items-center justify-center"
             aria-label="Contact on WhatsApp"
           >
             💬
-          </button>
+          </a>
         )}
       </div>
 
