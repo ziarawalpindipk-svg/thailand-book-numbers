@@ -40,45 +40,59 @@ export default function CurrencySelector({ onChange }) {
   const currentInfo = getCurrencyInfo(current);
 
   return (
-    <div className="relative inline-block">
+    <>
       <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 bg-white text-teal-800 rounded-full pl-1.5 pr-3 py-1 shadow-md hover:shadow-lg transition-all border border-teal-100 font-semibold text-sm"
+        onClick={() => setOpen(true)}
+        className="shrink-0 flex items-center gap-1.5 bg-white text-teal-800 rounded-full pl-1.5 pr-3 py-1 shadow-md hover:shadow-lg transition-all border border-teal-100 font-semibold text-sm"
       >
         <span className="text-lg leading-none">{currentInfo.flag}</span>
         <span>{currentInfo.code}</span>
-        <span
-          className={`text-xs text-teal-500 transition-transform ${open ? "rotate-180" : ""}`}
-        >
-          ▾
-        </span>
+        <span className="text-xs text-teal-500">▾</span>
       </button>
 
+      {/* Rendered as a centered full-screen overlay (not an anchored
+          dropdown) so it can never get clipped by the scrolling nav bar
+          it lives in - same pattern as the book-offer dialog. */}
       {open && (
         <div
-          className="absolute left-1/2 -translate-x-1/2 mt-2 bg-white text-black rounded-xl shadow-2xl ring-1 ring-black/5 z-50 w-64 max-h-80 overflow-y-auto py-1 animate-[fadeIn_0.15s_ease-out]"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setOpen(false)}
         >
-          {CURRENCIES.map((c) => {
-            const isActive = c.code === current;
-            return (
-              <button
-                key={c.code}
-                onClick={() => handleSelect(c.code)}
-                className={`flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                  isActive ? "bg-teal-50" : "hover:bg-gray-50"
-                }`}
-              >
-                <span className="text-xl leading-none">{c.flag}</span>
-                <span className="flex-1">
-                  <span className="font-semibold">{c.code}</span>
-                  <span className="text-gray-500"> - {c.name}</span>
-                </span>
-                {isActive && <span className="text-teal-600 font-bold">✓</span>}
-              </button>
-            );
-          })}
+          <div
+            className="bg-white text-black rounded-xl shadow-2xl w-72 max-h-[70vh] overflow-y-auto py-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="px-4 py-2 text-xs text-gray-400 font-semibold uppercase">
+              Choose Currency
+            </p>
+            {CURRENCIES.map((c) => {
+              const isActive = c.code === current;
+              return (
+                <button
+                  key={c.code}
+                  onClick={() => handleSelect(c.code)}
+                  className={`flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                    isActive ? "bg-teal-50" : "hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="text-xl leading-none">{c.flag}</span>
+                  <span className="flex-1">
+                    <span className="font-semibold">{c.code}</span>
+                    <span className="text-gray-500"> - {c.name}</span>
+                  </span>
+                  {isActive && <span className="text-teal-600 font-bold">✓</span>}
+                </button>
+              );
+            })}
+            <button
+              onClick={() => setOpen(false)}
+              className="block w-full text-center mt-1 px-4 py-2 text-sm text-gray-500 border-t"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -103,33 +103,43 @@ export default function AdminNews() {
     }
   }
 
-  // Wraps the currently selected text in the content box with markup
-  // (e.g. **bold** or a [link](url)), or inserts a placeholder if nothing
-  // is selected - a simple stand-in for a "Bold" / "Link" toolbar button.
-  function wrapSelection(before, after) {
-    const el = textareaRef.current;
-    if (!el) return;
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const selected = form.content.slice(start, end) || "text";
-    const newValue =
-      form.content.slice(0, start) + before + selected + after + form.content.slice(end);
+  const [showBoldDialog, setShowBoldDialog] = useState(false);
+  const [boldText, setBoldText] = useState("");
+  const [showLinkDialog, setShowLinkDialog] = useState(false);
+  const [linkText, setLinkText] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
+  const [cursorPos, setCursorPos] = useState(null);
+
+  // Inserts a snippet of text at the last known cursor position in the
+  // content box (or at the end, if the user never clicked into it yet).
+  function insertAtCursor(snippet) {
+    const pos = cursorPos === null ? form.content.length : cursorPos;
+    const newValue = form.content.slice(0, pos) + snippet + form.content.slice(pos);
     setForm({ ...form, content: newValue });
-    // Restore focus and select the wrapped text again for quick editing.
+    const newPos = pos + snippet.length;
     requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(start + before.length, start + before.length + selected.length);
+      const el = textareaRef.current;
+      if (el) {
+        el.focus();
+        el.setSelectionRange(newPos, newPos);
+      }
     });
+    setCursorPos(newPos);
   }
 
-  function handleBoldClick() {
-    wrapSelection("**", "**");
+  function handleConfirmBold() {
+    if (!boldText.trim()) return;
+    insertAtCursor(`**${boldText}**`);
+    setBoldText("");
+    setShowBoldDialog(false);
   }
 
-  function handleLinkClick() {
-    const url = window.prompt("Paste the link (must start with http:// or https://):");
-    if (!url) return;
-    wrapSelection("[", `](${url})`);
+  function handleConfirmLink() {
+    if (!linkText.trim() || !linkUrl.trim()) return;
+    insertAtCursor(`[${linkText}](${linkUrl})`);
+    setLinkText("");
+    setLinkUrl("");
+    setShowLinkDialog(false);
   }
 
   if (checking) return null;
@@ -184,22 +194,22 @@ export default function AdminNews() {
           <div>
             <label className="block text-sm">Text *</label>
 
-            {/* Simple formatting toolbar - select some text first, then
-                click a button to wrap it. */}
+            {/* Simple formatting toolbar - tap a button, fill in a tiny
+                form, no text selection needed. */}
             <div className="flex gap-2 mb-1">
               <button
                 type="button"
-                onClick={handleBoldClick}
+                onClick={() => setShowBoldDialog(true)}
                 className="border rounded px-2 py-1 text-sm font-bold"
-                title="Make selected text bold"
+                title="Add bold text"
               >
                 B
               </button>
               <button
                 type="button"
-                onClick={handleLinkClick}
+                onClick={() => setShowLinkDialog(true)}
                 className="border rounded px-2 py-1 text-sm"
-                title="Turn selected text into a clickable link"
+                title="Add a clickable link"
               >
                 🔗 Link
               </button>
@@ -211,12 +221,14 @@ export default function AdminNews() {
               rows={5}
               value={form.content}
               onChange={(e) => setForm({ ...form, content: e.target.value })}
+              onClick={(e) => setCursorPos(e.target.selectionStart)}
+              onKeyUp={(e) => setCursorPos(e.target.selectionStart)}
               required
             />
             <p className="text-xs text-gray-500 mt-1">
-              Select some text, then tap <strong>B</strong> to bold it or{" "}
-              <strong>🔗 Link</strong> to make it clickable. Press Enter for
-              a new line/paragraph.
+              Tap where you want to add something, then tap <strong>B</strong>{" "}
+              (bold) or <strong>🔗 Link</strong> (clickable link) and fill in
+              the small form. Press Enter for a new line/paragraph.
             </p>
 
             {form.content && (
@@ -270,6 +282,88 @@ export default function AdminNews() {
         )}
       </main>
       <Footer />
+
+      {showBoldDialog && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowBoldDialog(false)}
+        >
+          <div
+            className="bg-white rounded-lg p-5 max-w-sm w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-bold text-teal-800 mb-3">Add Bold Text</h3>
+            <label className="block text-sm mb-1">Text to make bold</label>
+            <input
+              type="text"
+              autoFocus
+              className="border p-2 w-full mb-3"
+              value={boldText}
+              onChange={(e) => setBoldText(e.target.value)}
+              placeholder="e.g. Limited time offer!"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleConfirmBold}
+                className="flex-1 bg-teal-700 text-white py-2 rounded font-semibold"
+              >
+                Insert
+              </button>
+              <button
+                onClick={() => setShowBoldDialog(false)}
+                className="flex-1 bg-gray-200 text-gray-700 py-2 rounded font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showLinkDialog && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowLinkDialog(false)}
+        >
+          <div
+            className="bg-white rounded-lg p-5 max-w-sm w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-bold text-teal-800 mb-3">Add a Clickable Link</h3>
+            <label className="block text-sm mb-1">Link text (what the reader sees)</label>
+            <input
+              type="text"
+              autoFocus
+              className="border p-2 w-full mb-3"
+              value={linkText}
+              onChange={(e) => setLinkText(e.target.value)}
+              placeholder="e.g. Click here to learn more"
+            />
+            <label className="block text-sm mb-1">Link (starts with http:// or https://)</label>
+            <input
+              type="text"
+              className="border p-2 w-full mb-3"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              placeholder="https://..."
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleConfirmLink}
+                className="flex-1 bg-teal-700 text-white py-2 rounded font-semibold"
+              >
+                Insert
+              </button>
+              <button
+                onClick={() => setShowLinkDialog(false)}
+                className="flex-1 bg-gray-200 text-gray-700 py-2 rounded font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import useAdminGuard from "../../utils/useAdminGuard";
 
 const ADMIN_LINKS = [
-  { href: "/admin/books", label: "📚 Manage Books" },
+  { href: "/admin/books", label: "📚 Manage Book Numbers" },
   { href: "/admin/offers", label: "📥 Manage Offers" },
   { href: "/admin/payments", label: "💳 Payments" },
   { href: "/admin/users", label: "👤 Users" },
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <div className="border p-4 rounded shadow">
-            <h2>Total Books</h2>
+            <h2>Total Book Numbers</h2>
             <p>999</p>
           </div>
           <div className="border p-4 rounded shadow">

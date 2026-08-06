@@ -79,12 +79,12 @@ export default function AdminBooks() {
     <div>
       <Header />
       <main className="p-6">
-        <h1 className="text-2xl font-bold">Manage Books</h1>
+        <h1 className="text-2xl font-bold">Manage Book Numbers</h1>
 
         {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
 
         {/* Quick add form - handy for testing, and for adding books one at a
-            time. For all 999 books at once, a bulk import script is better -
+            time. For all 999 book numbers at once, a bulk import script is better -
             ask for that separately when you're ready. */}
         <form onSubmit={handleAddBook} className="flex flex-wrap gap-2 mt-4 items-end">
           <div>
@@ -113,7 +113,7 @@ export default function AdminBooks() {
             disabled={adding}
             className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
           >
-            {adding ? "Adding..." : "+ Add Book"}
+            {adding ? "Adding..." : "+ Add Book Number"}
           </button>
         </form>
 
@@ -121,8 +121,8 @@ export default function AdminBooks() {
           <p className="mt-4">Loading books...</p>
         ) : books.length === 0 ? (
           <p className="mt-4">
-            No books yet - add one above to test, or ask for a bulk import
-            once you're ready to load all 999 books.
+            No book numbers yet - add one above to test, or ask for a bulk import
+            once you're ready to load all 999 book numbers.
           </p>
         ) : (
           <div className="overflow-x-auto mt-4">

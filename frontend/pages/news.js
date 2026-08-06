@@ -58,6 +58,12 @@ export default function News() {
           <div className="space-y-6">
             {news.map((item) => (
               <article key={item._id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
+                <div className="p-4 pb-2">
+                  <h2 className="font-bold text-lg text-teal-800 mb-1">{item.title}</h2>
+                  <p className="text-xs text-gray-400">
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
                 {item.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -67,10 +73,6 @@ export default function News() {
                   />
                 )}
                 <div className="p-4">
-                  <h2 className="font-bold text-lg text-teal-800 mb-1">{item.title}</h2>
-                  <p className="text-xs text-gray-400 mb-2">
-                    {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
                   <p className="text-sm text-gray-700">
                     <RichText text={item.content} />
                   </p>

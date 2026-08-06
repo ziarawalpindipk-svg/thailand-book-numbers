@@ -57,7 +57,7 @@ export default function Checkout() {
     setError("");
 
     if (cartItems.length === 0) {
-      setError("Your cart is empty. Add at least one book before submitting an offer.");
+      setError("Your cart is empty. Add at least one book number before submitting an offer.");
       return;
     }
 
@@ -168,11 +168,11 @@ export default function Checkout() {
         {cartItems.length === 0 ? (
           <p className="max-w-md mx-auto mt-4">
             Your cart is empty. Go back to the{" "}
-            <a href="/" className="text-coral-600 underline">homepage</a> and add a book first.
+            <a href="/" className="text-coral-600 underline">homepage</a> and add a book number first.
           </p>
         ) : (
           <p className="max-w-md mx-auto mt-2 text-sm text-gray-600">
-            {cartItems.length} book(s) in this offer, total {currencyInfo.symbol} {totalAmount}
+            {cartItems.length} book number(s) in this offer, total {currencyInfo.symbol} {totalAmount}
           </p>
         )}
 

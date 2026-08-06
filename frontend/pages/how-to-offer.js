@@ -6,11 +6,11 @@ import { HOME_BANNER_AD } from "../config/ads";
 const STEPS = [
   {
     title: "1. Browse Book Numbers",
-    text: "Every book has a unique number from 000 to 999. Use the search box or the quick-jump buttons on the Home page to browse them.",
+    text: "There are 1000 unique book numbers, from 000 to 999. Use the search box or the quick-jump buttons on the Home page to browse them.",
   },
   {
     title: "2. Pick a Number",
-    text: "Tap any number to open the offer box for that book.",
+    text: "Tap any number to open the offer box for that book number.",
   },
   {
     title: "3. Set Your Offer",
@@ -58,7 +58,7 @@ export default function HowToOffer() {
         <div className="mt-8 bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-gray-700">
           <p className="font-semibold mb-1">A few important notes:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>Minimum offer per book is 1 unit of whichever currency you've selected.</li>
+            <li>Minimum offer per book number is 1 unit of whichever currency you've selected.</li>
             <li>Sending an offer does not guarantee it will be accepted - the owner reviews every offer.</li>
             <li>You can pick your currency from the top menu before you start - switching later will clear your current selection.</li>
           </ul>

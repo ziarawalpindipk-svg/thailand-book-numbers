@@ -25,7 +25,7 @@ export default function Cart() {
     <div>
       <Header />
       <main className="p-6 max-w-3xl mx-auto pb-20 md:pb-6">
-        <h1 className="text-2xl font-bold">My Cart</h1>
+        <h1 className="text-2xl font-bold">Selected Book Numbers</h1>
         <CartSummary items={items} onRemove={handleRemove} />
         {items.length > 0 && (
           <Link href="/checkout">

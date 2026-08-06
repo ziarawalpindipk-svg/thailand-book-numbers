@@ -17,7 +17,7 @@ export default function CartSummary({ items = [], onRemove }) {
           {items.map((item, idx) => (
             <li key={idx} className="flex justify-between items-center border-b py-1">
               <span>
-                Book #{item.serial} x{item.quantity} @ {symbol} {item.pricePerBook}
+                Book Number #{item.serial} x{item.quantity} @ {symbol} {item.pricePerBook}
               </span>
               <span className="flex items-center gap-2">
                 {symbol} {item.total}
