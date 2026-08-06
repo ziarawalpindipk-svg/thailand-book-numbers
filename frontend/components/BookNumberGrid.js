@@ -166,7 +166,7 @@ export default function BookNumberGrid({ onSelectionChange }) {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-center text-2xl font-bold text-coral-600 mb-4">
-              Book Number #{dialogSerial}
+              Thailand Book Number #{dialogSerial}
             </h3>
 
             <label className="block text-sm mb-1">
