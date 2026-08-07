@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-// Sits at the top-left of every page (except Home itself) so people never
-// get stuck wondering how to get back - no need to know about the
-// hamburger menu at all.
+// Sits below the header/utility bars (not on top of the site title!) at
+// the left edge, on every page except Home - a glowing, pulsing button so
+// people never get stuck wondering how to get back.
 export default function HomeFloatingButton() {
   const router = useRouter();
 
@@ -12,7 +12,7 @@ export default function HomeFloatingButton() {
   return (
     <Link
       href="/"
-      className="fixed top-3 left-3 z-50 w-11 h-11 rounded-full bg-white text-teal-800 shadow-lg flex items-center justify-center text-xl border border-teal-100"
+      className="tb-home-btn fixed top-24 left-3 z-40 w-12 h-12 rounded-full bg-gradient-to-br from-coral-400 to-coral-600 text-white shadow-lg flex items-center justify-center text-2xl"
       aria-label="Back to Home"
       title="Back to Home"
     >
